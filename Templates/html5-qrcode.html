@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" type="image/jpg" href="{{ url_for('static', filename='favicon.ico' ) }}"/>
+	<title>QRCODE SCANNER</title>
+</head>
+<body>
+	<div align="center" style="padding-top: 2%">
+		<div id="reader" style="width: 30%;"></div>
+	</div>
+	<!--- <script src="https://raw.githubusercontent.com/mebjas/html5-qrcode/master/minified/html5-qrcode.min.js"></script> --->
+	<script src="{{ url_for('static', filename='javascript/html5-qrcode.min.js') }}"></script>
+	<script type="text/javascript">
+		// This method will trigger user permissions
+		Html5Qrcode.getCameras().then(devices => {
+		  /**
+		   * devices would be an array of objects of type:
+		   * { id: "id", label: "label" }
+		   */
+		  if (devices && devices.length) {
+		    var cameraId = devices[0].id;
+		    // .. use this to start scanning.
+
+		    const html5QrCode = new Html5Qrcode("reader");
+
+			const qrCodeSuccessCallback = message => { 
+			alert(message);
+			/* handle success 
+				html5QrCode.stop().then(ignore => {
+				  // QR Code scanning is stopped.
+				}).catch(err => {
+				  // Stop failed, handle it.
+				});*/ 
+			}
+
+			const config = { fps: 10, qrbox: 350 };
+
+			html5QrCode.start({ facingMode: "environment" }, config, qrCodeSuccessCallback);
+
+		  }
+		}).catch(err => {
+		  // handle err
+		});
+	</script>
+
+</body>
+</html>
